@@ -1,0 +1,53 @@
+home:
+  path: /
+  controller: App\Controller\HomeController::home
+
+# Listing des livres
+book:
+    path: /book
+    controller: App\Controller\BookController::index
+
+# Édition des livres
+book_edit:
+    path: /book/edit/{id}
+    controller: App\Controller\BookController::editBook
+
+# Ajout des livres
+book_add:
+    path: /book/add
+    controller: App\Controller\BookController::editBook
+
+# Suppression des livres
+book_delete:
+    path: /book/delete/{id}
+    controller: App\Controller\BookController::deleteBook
+
+# Listing Catégories de livres
+book_category:
+    path: /book/category
+    controller: App\Controller\BookCategoryController::index
+
+# Édition Catégorie de livres
+book_category_edit:
+    path: /book/category/edit/{id}
+    controller: App\Controller\BookCategoryController::editCategory
+
+# Ajout Catégorie de livres
+book_category_add:
+    path: /book/category/add
+    controller: App\Controller\BookCategoryController::editCategory
+
+# Listing des auteurs
+author:
+    path: /author
+    controller: App\Controller\AuthorController::index
+
+# Édition Catégorie de livres
+author_edit:
+    path: /author/edit/{id}
+    controller: App\Controller\AuthorController::editAuthor
+
+# Ajout Auteurs
+author_add:
+    path: /author/add
+    controller: App\Controller\AuthorController::editAuthor

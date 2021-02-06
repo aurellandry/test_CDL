@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auteurs{% endblock %}
+
+{% block body %}
+
+    {# Titre de la page #}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Listing - Auteurs</h1>
+        </div>
+    </div>
+
+    <div class="row alert alert-warning" role="alert">
+        <div class="col-xs-9 col-sm-10"></div>
+
+        <div class="col-xs-3 col-sm-2">
+            <a href="{{ path('author_add') }}" role="button" class="btn btn-info text-right">
+                {{ include('helpers/icon/_fa.html.twig', {'icon': 'plus'}) }} Ajouter
+            </a>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table" data-toggle="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" data-sortable="true">Nom</th>
+                    <th scope="col" data-sortable="true">Date de naissance</th>
+                    <th scope="col">Commentaires</th>
+                    <th scope="col">{# Bouton d'action #}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                <tr>
+                    <td>
+                        {{ author.id }}
+                    </td>
+                    <td>
+                        <a href="{{ path('author_edit', {'id': author.id}) }}">{{ author.name }}</a>
+                    </td>
+                    <td>
+                        {{ author.birthDate | date("d/m/Y") }}
+                    </td>
+                    <td>
+                        {{ author.comments | raw }}
+                    </td>
+                    <td>
+                        <a href="{{ path('author_edit', {'id': author.id}) }}" role="button" class="btn btn-info">Modifier</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

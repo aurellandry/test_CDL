@@ -1,0 +1,5 @@
+cdl:
+   resource: "../src/Routing/cdl.yml"
+
+security:
+   resource: "../src/Routing/security.yml"

@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres{% endblock %}
+
+{% block body %}
+    {# Titre de la page #}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{% if mode == 'new' %}Ajout{% else %}Modification{% endif %} - Livres</h1>
+        </div>
+    </div>
+
+    <div class="container container-body">
+        {{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate' }} ) }}
+
+        {# ------------------------- #}
+        {#      INFOS GÉNÉRALES      #}
+        {# ------------------------- #}
+        {% if mode == 'update' %}
+        <div class="panel-heading" >
+            <h4 class="panel-title" id="contact-panel-title">
+                <a data-group data-bs-toggle="collapse" data-bs-target="#info" href="">{{ include('helpers/icon/_fa.html.twig', {'icon': 'angle-double-down'}) }} Informations générales</a>
+            </h4>
+        </div>
+        {% endif %}
+
+        <div id="info" class="panel-collapse {% if mode == 'update' %}collapse{% endif %}">
+            
+            {{ include('helpers/form/_group.html.twig', {
+                        'field': form['title']
+                    }) }}
+
+            {{ include('helpers/form/_group.html.twig', {
+                        'field': form['date']
+                    }) }}
+
+            {{ include('helpers/form/_group.html.twig', {
+                        'field': form['category']
+                    }) }}
+
+            {{ include('helpers/form/_group.html.twig', {
+                        'field': form['author']
+                    }) }}
+
+            {{ include('helpers/form/_group.html.twig', {
+                        'field': form['comments']
+                    }) }}
+        </div>
+
+        {# -------------------------------- #}
+        {#      INFOS COMPLÉMENTAIRES       #}
+        {# -------------------------------- #}
+        
+        {% if mode == 'update' %}
+        <div class="panel-heading" >
+            <h4 class="panel-title">
+                <a data-group data-bs-toggle="collapse" data-bs-target="#info-compl" href="">{{ include('helpers/icon/_fa.html.twig', {'icon': 'angle-double-down'}) }} Informations complémentaires</a>
+            </h4>
+        </div>
+        <div id="info-compl" class="panel-collapse collapse table-responsive">
+            <table class="table table-condensed fiche">
+                <tbody>
+                    <tr>
+                        <td>Création</td>
+                        <td>    
+                            Créé le {{ book.createdAt | date("d-m-Y à H:i:s") }}
+                            {{ book.createdBy?'par ' ~ book.createdBy.username }}
+                        </td>  
+                    </tr>
+                    <tr>
+                        <td>Modification</td>
+                        <td>    
+                            Modifié le {{ book.updatedAt | date("d-m-Y à H:i:s") }}
+                            {{ book.updatedBy?'par ' ~ book.updatedBy.username }}
+                        </td>  
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            {% if not form.vars.valid %}
+            <div class="col-md-8 error">
+                {{ include('helpers/icon/_fa.html.twig', {'icon': 'exclamation-triangle'}) }} 
+                Le formulaire contient des erreurs. Vérifiez les différentes rubriques.
+            </div>
+            {% else %}
+                <div class="col-md-8"></div>
+            {% endif %} 
+            <div class="col-md-4 text-right">
+                {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-info'} }) }}
+            </div>
+        </div>
+
+        {{ form_widget(form) }}
+
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

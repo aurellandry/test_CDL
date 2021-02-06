@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres{% endblock %}
+
+{% block body %}
+    {# Titre de la page #}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Listing - Livres</h1>
+        </div>
+    </div>
+
+    {# Barre de recherche #}
+    {{ include('helpers/form/_search.html.twig', { 
+                'fields':     ['author', 'date', 'book_category', 'book_title'],
+                'messages': {'date': 'Seule l\'année de la date saisie sera prise en compte dans la recherche' } }) }}
+
+    <div class="row alert alert-warning" role="alert">
+        <div class="col-xs-9 col-sm-10"></div>
+
+        <div class="col-xs-3 col-sm-2">
+            <a href="{{ path('book_add') }}" role="button" class="btn btn-info text-right">
+                {{ include('helpers/icon/_fa.html.twig', {'icon': 'plus'}) }} Ajouter
+            </a>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table" data-toggle="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" data-sortable="true">Nom</th>
+                    <th scope="col" data-sortable="true">Catégorie</th>
+                    <th scope="col" data-sortable="true">Date</th>
+                    <th scope="col" data-sortable="true">Auteur</th>
+                    <th scope="col">{# Bouton d'action #}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <th scope="row">
+                        {{ book.id }}
+                    </th>
+                    <td>
+                        <a href="{{ path('book_edit', {'id': book.id}) }}">{{ book.title }}</a>
+                    </td>
+                    <td>
+                        {{ book.category.name }}
+                    </td>
+                    <td>
+                        {{ book.date ? (book.date | date("Y")) : "N/C" }}
+                    </td>
+                    <td>
+                        {{ book.author ? book.author.name : "N/C" }}
+                    </td>
+                    <td>
+                        <a href="{{ path('book_edit', {'id': book.id}) }}" role="button" class="btn btn-info">Modifier</a>
+                        <a href="{{ path('book_delete', {'id': book.id}) }}" role="button" class="btn btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

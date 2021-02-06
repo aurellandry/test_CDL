@@ -1,0 +1,109 @@
+{# Pour afficher le formulaire de recherche #}
+
+{# Critères de recherche par défaut #}
+{% if fields is not defined %}
+    {% set fields = ['whatever'] %}
+{% endif %}
+{#{ dump(fields) }#}
+
+{# 
+    Les champs associés aux critères de recherche sont pilotables depuis la vue
+    Attention, certains champs définis dans les vues ne sont pas initialisés dans le controleur
+    afin de réserver des critères à des profils d'utilisateurs particuliers
+    Il faut donc réduire la liste des critères aux champs véritablement instanciés dans le formulaire
+#}
+{% set active_fields = [] %}
+{% for field in fields  %}
+    {% if form[field] is defined %}
+        {% set active_fields = active_fields | merge([field]) %}
+    {% endif %}
+{% endfor %}
+{#{ dump(active_fields) }#}
+
+{# Les messages d'aide également car un critère de recherche peut être exploité de manière différente suivant les données #}
+{% if messages is not defined %}
+    {% set messages = [] %}
+{% endif %}
+
+{% set form = search_form |default(form) %}
+
+{# Nombre de critères renseignés, ie avec une valeur précisé dans le champ #}
+{% set nb = 0 %}
+{% for field in active_fields %}
+    {% if form[field] is iterable %}
+        {% set nb = nb + form[field]|length %}
+    {% else %}   
+        {% set nb = nb + 1 %}
+    {% endif %}   
+{% endfor %}   
+
+{# Le module de recherche ne s'affiche que s'il possède des champs #}
+{% if active_fields|length>0 %}
+<br/>
+<div class="container-body">
+    {#{ dump(form) }#}
+    
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+    {# Pas de validation HTML5 pour laisser les contrôles de validation à Symfony et avoir un meilleur rendu avec Bootstrap #}
+    {{ form_start(form, {'attr': {'id': 'f-data-search', 'novalidate': 'novalidate' }} ) }}
+    
+    <a data-bs-toggle="collapse" data-bs-target="#data-search" href="#">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                {{ include('helpers/icon/_fa.html.twig', {'icon': 'search'}) }}Critères de recherche
+            </h4>
+        </div>
+    </a>
+    {# 
+        On laisse volontairement la zone fermée
+        Elle n'est plus automatiquement ouverte quand des critères de recherche sont renseignées
+        Car elle consomme trop d'espace au détriment de la liste de résultats
+    #}
+    <div id="data-search" class="panel-collapse collapse margin-top-20">
+        <div class="panel-body">
+            
+            {# ------------------------ #}
+            {#      BANDEAU D'ALERTE    #}
+            {# ------------------------ #}
+            {% if warning|default(false) %}
+                <div class="alert alert-warning" role="alert">
+                    {{ warning }}
+                </div>
+            {% endif %}
+            
+            {% for field in active_fields  %}
+                {# Deux champs par ligne #}
+                {% if loop.index0 is even %}
+                <div class="row">
+                {% endif %}
+            
+                <div class="col-sm-12 col-md-6">
+                    {{ include('helpers/form/_group.html.twig', {
+                                    'field':    form[field],    
+                                    'help':     messages[field]|default('') }) }}
+                </div>
+                
+                {% if loop.index0 is odd or loop.last %}
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {# Les autres champs du formulaire sont masqués #}
+    <div class="hide">
+        {#{ form_widget(form) }#}
+    </div>
+    
+    {{ form_end(form) }}
+
+</div>  
+<br/><br/>
+{% endif %} 
