@@ -10,7 +10,9 @@ Pour installer le projet sur votre poste, suivez les instructions suivantes :
 
 * Importer la base de données test_cdl.sql
 
-* Démarrer le projet (composer i) (symfony serve)
+* Installer les dépendances en exécutant la commande **composer install** à la racine du projet
+
+* Démarrer le serveur avec la commande **symfony serve** et rendez-vous à l'adresse http://localhost:8000
   
 * Voici le [sujet](https://github.com/lecomptoirdeslangues/test_CDL/blob/main/instruction.pdf) du test.
 
